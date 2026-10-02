@@ -1,0 +1,4 @@
+# Netlify build settings for the admin portal (site base directory: admin)
+[build]
+  command = "npm install && npm run build"
+  publish = "dist"

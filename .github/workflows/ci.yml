@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm test
+        env:
+          TEST_MONGODB_URI: mongodb://127.0.0.1:27017/zenplug_enroll_test
+
+  portals:
+    name: Build ${{ matrix.portal }} portal
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        portal: [admin, customer]
+    defaults:
+      run:
+        working-directory: ${{ matrix.portal }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ matrix.portal }}/package-lock.json
+      - run: npm ci
+      - run: npm run build

@@ -1,0 +1,20 @@
+# secrets - NEVER commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# dependencies and build output
+node_modules/
+dist/
+.vite/
+
+# logs, databases, editor and OS files
+*.log
+npm-debug.log*
+*.db
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

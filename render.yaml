@@ -1,0 +1,22 @@
+# Render Blueprint for the API (the portals are deployed separately, e.g. on Netlify).
+# See "Deploying online" in README.md.
+services:
+  - type: web
+    name: zenplug-api
+    runtime: node
+    plan: free            # without this line Render may pick a paid plan
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI       # your MongoDB Atlas connection string (secret)
+        sync: false
+      - key: JWT_SECRET        # generated for you
+        generateValue: true
+      - key: CORS_ORIGINS      # exact portal addresses, comma separated, no trailing slash
+        sync: false
+      - key: METER_INGEST_TOKEN   # secret shared with the meter hardware
+        sync: false

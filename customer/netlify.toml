@@ -1,0 +1,4 @@
+# Netlify build settings for the customer portal (site base directory: customer)
+[build]
+  command = "npm install && npm run build"
+  publish = "dist"
